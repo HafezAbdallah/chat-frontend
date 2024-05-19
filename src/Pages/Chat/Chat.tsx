@@ -20,7 +20,7 @@ const Chat = (props: { onLogOut: () => void }) => {
   const [connection, setConnection] = useState<signalR.HubConnection>(null);
   const [selectedUser, setSelectedUser] = useState<User>();
   const [users, setUsers] = useState<User[]>([]);
-  const loggedInUser = getCookie("userName"); // TODO : memo
+  const loggedInUser = getCookie("username"); // TODO : memo
   const [messages, setMessages] = useState<Map<string, ChatMessages[]>>(
     new Map<string, ChatMessages[]>()
   );
@@ -28,7 +28,7 @@ const Chat = (props: { onLogOut: () => void }) => {
   const [inputValue, setInputValue] = useState<string>("");
   useEffect(() => {
     getUsersStatus().then((res) => {
-      const allUsers = res.data.filter((x) => x.userName != loggedInUser);
+      const allUsers = res.data.filter((x) => x.username != loggedInUser);
       setUsers(allUsers);
     });
     getUserMessages().then((res) => {
@@ -56,10 +56,10 @@ const Chat = (props: { onLogOut: () => void }) => {
       })
       .catch((err) => console.error("SignalR Connection Error: ", err));
 
-    newConnection.on("UserConnected", (userName: string) => {
+    newConnection.on("UserConnected", (username: string) => {
       setUsers((prev) => {
         const allUsers = [...prev];
-        const connectedUser = allUsers.find((x) => x.userName == userName);
+        const connectedUser = allUsers.find((x) => x.username == username);
         if (connectedUser) connectedUser.status = UserStatus.Online;
         allUsers.sort((a, b) => {
           if (
@@ -79,10 +79,10 @@ const Chat = (props: { onLogOut: () => void }) => {
         return allUsers;
       });
     });
-    newConnection.on("UserDisconnected", (userName: string) => {
+    newConnection.on("UserDisconnected", (username: string) => {
       setUsers((prev) => {
         const allUsers = [...prev];
-        const disconnectedUser = allUsers.find((x) => x.userName == userName);
+        const disconnectedUser = allUsers.find((x) => x.username == username);
         if (disconnectedUser) disconnectedUser.status = UserStatus.Offline;
         allUsers.sort((a, b) => {
           if (
@@ -103,6 +103,9 @@ const Chat = (props: { onLogOut: () => void }) => {
       });
     });
 
+    newConnection.onclose((e) => {
+      console.log("Signal R Just Closed with error: ", e);
+    });
     return () => {
       console.log("Stopping Connection");
       newConnection.stop();
@@ -113,7 +116,7 @@ const Chat = (props: { onLogOut: () => void }) => {
     // this was done in use effect so we can use the user latest state without closure
     // just as a poc of the ways we can use
     connection?.on("ReceiveMessage", (user: string, message: string) => {
-      setSelectedUser(users.find((x) => x.userName == user));
+      setSelectedUser(users.find((x) => x.username == user));
       setMessages((prev) => {
         const temp = new Map(prev);
         if (temp.has(user))
@@ -128,10 +131,10 @@ const Chat = (props: { onLogOut: () => void }) => {
   const handleSendMessage = async (message: string) => {
     if (connection) {
       try {
-        await connection.send("SendMessage", selectedUser.userName, message);
+        await connection.send("SendMessage", selectedUser.username, message);
         const temp = new Map(messages);
         temp
-          .get(selectedUser.userName)
+          .get(selectedUser.username)
           .push({ message, type: MessageType.Sent });
 
         setMessages(temp);
@@ -172,7 +175,7 @@ const Chat = (props: { onLogOut: () => void }) => {
               <div key={index} onClick={() => setSelectedUser(user)}>
                 <ChatUser
                   isOnline={user.status == UserStatus.Online}
-                  name={user.userName}
+                  name={user.username}
                 />{" "}
               </div>
             );
@@ -187,14 +190,14 @@ const Chat = (props: { onLogOut: () => void }) => {
                   {" "}
                   <ChatUser
                     isOnline={selectedUser.status == UserStatus.Online}
-                    name={selectedUser.userName}
+                    name={selectedUser.username}
                   />
                 </div>
                 <Divider></Divider>
               </div>
               <div style={{ height: "80%" }}>
                 <ChatArea
-                  messages={messages.get(selectedUser.userName) || []}
+                  messages={messages.get(selectedUser.username) || []}
                 />
               </div>
               <div className="chatInput">

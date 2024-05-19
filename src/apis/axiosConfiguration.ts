@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "utils/cookiesHelper";
 
 const instance = axios.create({
   baseURL: "http://localhost:5151/api/",
@@ -9,7 +10,7 @@ const instance = axios.create({
 });
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("Token");
+    const token = getCookie("username");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

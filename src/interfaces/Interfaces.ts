@@ -1,7 +1,7 @@
 import { UserStatus } from "enums/Enums";
 
 export interface User {
-  userName: string;
+  username: string;
   status: UserStatus;
 }
 

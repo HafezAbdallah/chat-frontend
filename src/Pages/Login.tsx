@@ -24,18 +24,18 @@ const Login = (props: { onLogin: () => void }) => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const userName = data.get("email") as string;
+    const username = data.get("email") as string;
     const password = data.get("password") as string;
 
     if (mode == Mode.Login) {
-      login(userName, password)
+      login(username, password)
         .then((result) => {
-          localStorage.setItem("Token", result.data);
+          setCookie("username", result.data);
           props.onLogin();
         })
         .catch(() => {});
     } else {
-      register(userName, password)
+      register(username, password)
         .then(() => {
           setMode(Mode.Login);
         })
@@ -49,7 +49,7 @@ const Login = (props: { onLogin: () => void }) => {
   };
 
   React.useEffect(() => {
-    if (getCookie("userName")) props.onLogin();
+    if (getCookie("username")) props.onLogin();
   }, []);
   return (
     <Container component="main" maxWidth="xs">
