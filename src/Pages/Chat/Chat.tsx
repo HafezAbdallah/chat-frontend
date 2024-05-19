@@ -25,8 +25,7 @@ const Chat = (props: { onLogOut: () => void }) => {
     new Map<string, ChatMessages[]>()
   );
 
-  const [inputValue, setInputValue] = useState<string>();
-  console.log(messages);
+  const [inputValue, setInputValue] = useState<string>("");
   useEffect(() => {
     getUsersStatus().then((res) => {
       const allUsers = res.data.filter((x) => x.userName != loggedInUser);

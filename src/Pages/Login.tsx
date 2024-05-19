@@ -31,12 +31,9 @@ const Login = (props: { onLogin: () => void }) => {
       login(userName, password)
         .then((result) => {
           localStorage.setItem("Token", result.data);
-          setCookie("userName", result.data, 7);
           props.onLogin();
         })
-        .catch(() => {
-          console.log("msh tmam");
-        });
+        .catch(() => {});
     } else {
       register(userName, password)
         .then(() => {
