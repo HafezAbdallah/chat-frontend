@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import Login from "./pages/Login";
 import "./App.css";
-import Login from "./Pages/Login";
+import Chat from "pages/Chat/Chat";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <>
-      <Login />
+      {isLoggedIn ? (
+        <Chat onLogOut={() => setIsLoggedIn(false)} />
+      ) : (
+        <Login onLogin={() => setIsLoggedIn(true)} />
+      )}
     </>
   );
-}
+};
 
 export default App;

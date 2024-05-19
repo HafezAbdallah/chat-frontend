@@ -7,17 +7,53 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { login, register } from "apis/userManagementApis";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import { useState } from "react";
+import { setCookie, getCookie } from "utils/cookiesHelper";
 
-const Login = () => {
+const enum Mode {
+  Login,
+  Register
+}
+
+const Login = (props: { onLogin: () => void }) => {
+  const [mode, setMode] = useState(Mode.Login);
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password")
-    });
+    const userName = data.get("email") as string;
+    const password = data.get("password") as string;
+
+    if (mode == Mode.Login) {
+      login(userName, password)
+        .then((result) => {
+          localStorage.setItem("Token", result.data);
+          setCookie("userName", result.data, 7);
+          props.onLogin();
+        })
+        .catch(() => {
+          console.log("msh tmam");
+        });
+    } else {
+      register(userName, password)
+        .then(() => {
+          setMode(Mode.Login);
+        })
+        .catch(() => {
+          console.log("error");
+        });
+    }
+  };
+  const handleRegister = () => {
+    setMode(Mode.Register);
   };
 
+  React.useEffect(() => {
+    if (getCookie("userName")) props.onLogin();
+  }, []);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -32,7 +68,7 @@ const Login = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          {mode == Mode.Login ? "Log in" : "Register"}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -60,8 +96,15 @@ const Login = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
-            Sign In
+            {mode == Mode.Login ? "Log in" : "Register"}
           </Button>
+          {mode == Mode.Login && (
+            <Grid item>
+              <Link onClick={handleRegister} variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          )}
         </Box>
       </Box>
     </Container>

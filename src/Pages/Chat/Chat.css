@@ -1,0 +1,50 @@
+.appHeader {
+    display: flex;
+    width: 100%;
+    background-color: rgb(43, 153, 226);
+    height: 5%;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+    color:white
+}
+
+
+.chatLayout {
+    display: flex;
+    height: 95%;
+    background-color: rgb(221, 230, 227);
+    border: 1px solid rgb(218, 212, 212);
+
+}
+
+.usersList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    background-color: rgb(226, 226, 236);
+    border: 1px solid rgb(218, 212, 212);
+}
+
+.chatArea {
+    flex: 4;
+    background-color: rgb(248, 246, 246);
+    height: 100%;
+}
+
+.chatHeader {
+    display: flex;
+    padding: 10px;
+    background-color: rgb(226, 226, 236);
+    border-bottom: 1px solid rgb(218, 212, 212);
+
+
+    /* flex-direction: column;
+    align-items: flex-start; */
+}
+
+.chatInput {
+    height: 5%;
+    padding: 10px;
+}

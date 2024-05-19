@@ -1,0 +1,36 @@
+.container{
+    display: block;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.avatar-container {
+    position: relative;
+    display: inline-block;
+    padding: 5px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .status-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  
+  .status-dot.online {
+    background-color: #44b700;
+  }
+  
+  .status-dot.offline {
+    background-color: gray;
+  }
+  

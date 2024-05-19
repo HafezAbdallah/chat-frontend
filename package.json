@@ -12,10 +12,13 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@microsoft/signalr": "^8.0.0",
     "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.17",
+    "axios": "^1.6.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "string-hash": "^1.1.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
