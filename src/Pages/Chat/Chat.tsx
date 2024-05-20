@@ -28,6 +28,7 @@ const Chat = (props: { onLogOut: () => void }) => {
   const [inputValue, setInputValue] = useState<string>("");
   useEffect(() => {
     getUsersStatus().then((res) => {
+      // this api can be removed to reduce api calls and instead we can get all users from the next api
       const allUsers = res.data.filter((x) => x.username != loggedInUser);
       setUsers(allUsers);
     });
@@ -40,6 +41,7 @@ const Chat = (props: { onLogOut: () => void }) => {
     });
 
     const newConnection = new signalR.HubConnectionBuilder()
+      // url should be dynamic according to the env
       .withUrl("http://localhost:5151/chatHub", {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets,

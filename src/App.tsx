@@ -4,7 +4,7 @@ import "./App.css";
 import Chat from "pages/Chat/Chat";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // this can be removed and we can depend on reading the cookie
   return (
     <>
       {isLoggedIn ? (
