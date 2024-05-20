@@ -4,6 +4,8 @@ React + TypeScript + Vite using the Online Template
 
 To run the app just clone it and run npm install then npm start
 
+# Project Structure
+
 Basic folder structure ( by feature ) and axios class to handle api calls , used normal css
 
 -pages folder : main business features.
